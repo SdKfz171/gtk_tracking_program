@@ -10,6 +10,18 @@
 GtkBuilder * builder;
 GtkWidget * window;
 
+GtkWidget * add_dialog;
+GtkListBox * add_listbox;
+GtkEntryBuffer * add_entry_buffer;
+GtkComboBoxText * add_carrier_combo;
+
+GtkWidget * del_dialog;
+GtkListBox * del_listbox;
+GtkTextBuffer * del_buffer;
+GtkTextIter del_start, del_end;
+
+GtkWidget * track_dialog;
+
 void on_search_button_clicked(GtkButton * self)
 {
     puts("search button clicked");
@@ -20,6 +32,8 @@ void carrier_combo_changed(GtkComboBoxText * self)
     puts("carrier combobox changed");
 }
 
+
+// delete dialog
 void delete_delete_button_clicked(GtkWidget * self)
 {
     puts("delete delete button");
@@ -35,6 +49,7 @@ void del_prev_track_menu_activate(GtkWidget * self)
     puts("del menu");
 }
 
+// add dialog
 void add_add_button_clicked(GtkWidget * self)
 {
     puts("add add button");
@@ -50,6 +65,7 @@ void add_prev_track_menu_activate(GtkWidget * self)
     puts("add menu");
 }
 
+// track dialog
 void track_track_button_clicked(GtkWidget * self)
 {
     puts("track track button");
@@ -65,11 +81,21 @@ void track_track_menu_activate(GtkWidget * self)
     puts("track menu");
 }
 
+// main
 int main(int argc, char *argv[])
 {
     gtk_init(&argc, &argv);
     builder = gtk_builder_new_from_file("ui.glade");
     window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
+
+    add_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "add_dialog"));
+    add_listbox= GTK_LIST_BOX(gtk_builder_get_object(builder, "add_listbox"));
+    add_entry_buffer = GTK_ENTRY_BUFFER(gtk_builder_get_object(builder, "add_entry_buffer"));
+    add_carrier_combo = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "add_carrier_combobox"));
+
+    del_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "delete_dialog"));
+    del_listbox = GTK_LIST_BOX(gtk_builder_get_object(builder, "delete_listbox"));
+    del_buffer = GTK_TEXT_BUFFER(gtk_builder_get_object(builder, "delete_buffer"));
 
     gtk_builder_connect_signals(builder, NULL);
     g_object_unref(builder);
