@@ -108,6 +108,19 @@ int trim(char *str)
     return strlen(str);
 }
 
+void make_progress_form(TrackingData tracking_data, GtkTextBuffer * out_buffer)
+{
+    for(int i = 0; i < tracking_data.progress_count; i++){
+        char form[BUFSIZ];
+        trim(tracking_data.progresses[i].location.name);
+        sprintf(form, "단계\r\t%s\n시간\n\t%d-%02d-%02d %02d:%02d\n현재위치\n\t%s\n처리현황\n\t%s\n\n==============================\n\n", 
+                tracking_data.progresses[i].status.text, tracking_data.progresses[i].time.tm_year+1900, tracking_data.progresses[i].time.tm_mon+1, tracking_data.progresses[i].time.tm_mday, tracking_data.progresses[i].time.tm_hour, tracking_data.progresses[i].time.tm_min, tracking_data.progresses[i].location.name, tracking_data.progresses[i].description);
+        
+        gtk_text_buffer_insert(out_buffer, &start, form, -1);
+        gtk_text_buffer_get_end_iter(out_buffer, &start);
+    }
+}
+
 int track_invoice(char *invoice, char *carrier, GtkTextBuffer *out_buffer, int mode)
 {
     // mode: 0(carrier.name), 1(carrier.id)
@@ -133,16 +146,7 @@ int track_invoice(char *invoice, char *carrier, GtkTextBuffer *out_buffer, int m
     gtk_text_buffer_delete(out_buffer, &start, &end);
     
     gtk_text_buffer_get_bounds (out_buffer, &start, &end);
-
-    for(int i = 0; i < tracking_data.progress_count; i++){
-        char form[BUFSIZ];
-        trim(tracking_data.progresses[i].location.name);
-        // sprintf(form, "\t단계\t시간\t현재위치\t\t처리현황\n%s\t%d-%02d-%02d %02d:%02d\t%s\t%s\n", tracking_data.progresses[0].status.text, tracking_data.progresses[0].time.tm_year+1900, tracking_data.progresses[0].time.tm_mon+1, tracking_data.progresses[0].time.tm_mday, tracking_data.progresses[0].time.tm_hour, tracking_data.progresses[0].time.tm_min, tracking_data.progresses[0].location.name, tracking_data.progresses[0].description);
-        sprintf(form, "단계\r\t%s\n시간\n\t%d-%02d-%02d %02d:%02d\n현재위치\n\t%s\n처리현황\n\t%s\n\n==============================\n\n", 
-                tracking_data.progresses[i].status.text, tracking_data.progresses[i].time.tm_year+1900, tracking_data.progresses[i].time.tm_mon+1, tracking_data.progresses[i].time.tm_mday, tracking_data.progresses[i].time.tm_hour, tracking_data.progresses[i].time.tm_min, tracking_data.progresses[i].location.name, tracking_data.progresses[i].description);
-        gtk_text_buffer_insert(out_buffer, &start, form, -1);
-        gtk_text_buffer_get_end_iter(out_buffer, &start);
-    }
+    make_progress_form(tracking_data, out_buffer);
 }
 
 /* =============================================== */
