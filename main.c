@@ -39,9 +39,61 @@ GtkTextIter del_start, del_end;
 
 GtkWidget * track_dialog;
 
-void on_search_button_clicked(GtkButton * self)
+char * find_carrier_id(char * name)
 {
-    puts("search button clicked");
+    ListElmt * element;
+    Carrier * carrier;
+
+    element = list_head(&carrier_list);
+    while (1)
+    {
+        carrier = list_data(element);
+
+        if(strcmp(carrier->name, name) == 0)
+            return carrier->id;
+        else
+            element = list_next(element);
+    }   
+    return NULL;
+}
+
+char * find_carrier_name(char * id)
+{
+    ListElmt * element;
+    Carrier * carrier;
+
+    element = list_head(&carrier_list);
+    while (1)
+    {
+        carrier = list_data(element);
+
+        if(strcmp(carrier->id, id) == 0)
+            return carrier->name;
+        else
+            element = list_next(element);
+    }   
+    return NULL;
+}
+
+/* =============================================== */
+
+void on_search_button_clicked (GtkButton * self)
+{
+    gchar * invoice;
+    gchar * carrier;
+
+    invoice = gtk_entry_buffer_get_text(entry_buffer);
+    carrier = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(carrier_combo));
+
+    if(strlen(invoice) == 0 || carrier == NULL){
+        printf("invoice number or carrier is empty!!\r\n");    
+        return;
+    }
+        
+    puts("tracking start!");
+    puts(invoice);
+    puts(find_carrier_id(carrier));
+    // need track something
 }
 
 void carrier_combo_changed(GtkComboBoxText * self)
