@@ -7,3 +7,9 @@ Delivery tracking program made by C. (gtk 3.0)
     brew install json-c
     brew install gtk+3
     brew install sqlite
+    
+## 사용한 배송 조회 API
+
+🙇‍♂️
+
+https://github.com/shlee322/delivery-tracker
