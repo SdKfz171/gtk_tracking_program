@@ -58,10 +58,12 @@ char * HttpGet(const char * url, char * * response){
     return *response;
 }
 
-#if 0
+#if 1
+#define CARRIER 0
+#define TRACKER 1
 int main(int argc, char * argv[]){
     char * response;
-
+#if CARRIER
     HttpGet("https://apis.tracker.delivery/carriers", &response);
     
     puts(response);
@@ -72,7 +74,16 @@ int main(int argc, char * argv[]){
     GetCarrierList(&carrier_list, response);
 
     PrintCarrierList(&carrier_list);
+#elif TRACKER 
+    HttpGet("https://apis.tracker.delivery/carriers/kr.epost/tracks/6896770230128", &response);
+    
+    puts(response);
 
+    TrackingData tracking_data;
+    GetTrackingData(response, &tracking_data);
+
+    PrintTrackingData(&tracking_data);
+#endif
     return 0;
 }
 #endif
