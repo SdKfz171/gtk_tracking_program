@@ -12,3 +12,4 @@ List * GetCarrierList(List * list, const char * json);
 ListElmt * list_select(List * list, int index);
 Carrier * GetCarriers(const char * json);
 int GetCarrierCount(const char * json);
+void PrintCarrierList(List * list);
