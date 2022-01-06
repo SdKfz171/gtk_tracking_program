@@ -11,4 +11,5 @@ Delivery tracking program made by C. (gtk 3.0)
 ## 사용한 배송 조회 API
 
 🙇‍♂️
-https://github.com/shlee322/delivery-tracker/issues
+
+https://github.com/shlee322/delivery-tracker
