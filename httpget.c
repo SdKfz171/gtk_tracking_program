@@ -58,6 +58,7 @@ char * HttpGet(const char * url, char * * response){
     return *response;
 }
 
+#if 0
 int main(int argc, char * argv[]){
     char * response;
 
@@ -74,3 +75,4 @@ int main(int argc, char * argv[]){
 
     return 0;
 }
+#endif

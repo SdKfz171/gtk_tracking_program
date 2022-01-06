@@ -6,6 +6,12 @@
 #include <sqlite3.h>
 #include <curl/curl.h>
 
+#include "list.h"
+#include "element.h"
+#include "httpget.h"
+
+List carrier_list;
+
 // GtkWidget
 GtkBuilder * builder;
 GtkWidget * window;
@@ -92,11 +98,31 @@ void track_track_menu_activate(GtkWidget * self)
     puts("track menu");
 }
 
+void init()
+{
+    // http request carrier list
+    char * response;
+
+    HttpGet("https://apis.tracker.delivery/carriers", &response);
+    puts(response);
+
+    list_init(&carrier_list);
+
+    for(int i = 0; i < GetCarrierCount(response); i++){
+        Carrier * temp = (Carrier *)malloc(sizeof(Carrier));
+        memcpy(temp, &(GetCarriers(response)[i]), sizeof(Carrier));
+        if(!list_size(&carrier_list)) list_insert_next(&carrier_list, NULL, temp);
+        else list_insert_next(&carrier_list, list_tail(&carrier_list),temp);   
+    }
+}
+
 // main
 int main(int argc, char *argv[])
 {
+    init();
+
     gtk_init(&argc, &argv);
-    
+
     builder = gtk_builder_new_from_file("ui.glade");
     window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
 

@@ -1,6 +1,6 @@
 CC = gcc
 
-OBJS = main.o
+OBJS = list.o element.o httpget.o main.o
 OBJS1 = list.o element.o
 OBJS2 = list.o element.o httpget.o
 
