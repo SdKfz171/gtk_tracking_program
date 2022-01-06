@@ -98,6 +98,32 @@ void track_track_menu_activate(GtkWidget * self)
     puts("track menu");
 }
 
+int set_carrier_combobox_elements(GtkComboBoxText * combo)
+{
+    ListElmt * element;
+    Carrier * carrier;
+
+    gtk_combo_box_text_remove_all(combo);
+
+    element = list_head(&carrier_list);
+    puts("List Elements");
+    while (1)
+    {
+        carrier = list_data(element);
+        
+        puts(carrier->id);
+        puts(carrier->name);
+        gtk_combo_box_text_append(combo, carrier->id, carrier->name);
+
+        if(list_is_tail(element))
+            break;
+        else
+            element = list_next(element);
+    }
+
+    return carrier_list.size;
+}
+
 void init()
 {
     // http request carrier list
@@ -140,6 +166,9 @@ int main(int argc, char *argv[])
     del_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "delete_dialog"));
     del_listbox = GTK_LIST_BOX(gtk_builder_get_object(builder, "delete_listbox"));
     del_buffer = GTK_TEXT_BUFFER(gtk_builder_get_object(builder, "delete_buffer"));
+
+    int combo_size = set_carrier_combobox_elements(carrier_combo);
+    printf("combo_size: %d\r\n", combo_size);
 
     gtk_builder_connect_signals(builder, NULL);
     g_object_unref(builder);
