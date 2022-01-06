@@ -25,9 +25,9 @@ void list_init(List *list);
 
 void list_destroy(List *list);
 
-int list_ins_next(List *list, ListElmt *element, const void *data);
+int list_insert_next(List *list, ListElmt *element, const void *data);
 
-int list_ins_prev(List *list, ListElmt *element, const void *data);
+int list_insert_prev(List *list, ListElmt *element, const void *data);
 
 int list_remove(List *list, ListElmt *element, void **data);
 
