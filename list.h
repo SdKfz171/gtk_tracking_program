@@ -3,13 +3,15 @@
 
 #include <stdlib.h>
 
-typedef struct ListElmt_ {
-	void                *data;
-	struct ListElmt_    *prev;
-	struct ListElmt_    *next;
+typedef struct ListElmt_
+{
+	struct Carrier_ *data;
+	struct ListElmt_ *prev;
+	struct ListElmt_ *next;
 } ListElmt;
 
-typedef struct List_ {
+typedef struct List_
+{
 	int size;
 
 	ListElmt *head;
