@@ -10,6 +10,17 @@
 GtkBuilder * builder;
 GtkWidget * window;
 
+GtkTextBuffer * buffer;
+GtkTextIter start, end;
+
+GtkTextBuffer * prev_buffer;
+GtkTextIter prev_start, prev_end;
+
+GtkEntryBuffer * entry_buffer;
+
+GtkComboBoxText * carrier_combo;
+GtkListBox * latest_progress_listbox;
+
 GtkWidget * add_dialog;
 GtkListBox * add_listbox;
 GtkEntryBuffer * add_entry_buffer;
@@ -87,6 +98,12 @@ int main(int argc, char *argv[])
     gtk_init(&argc, &argv);
     builder = gtk_builder_new_from_file("ui.glade");
     window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
+
+    buffer = GTK_TEXT_BUFFER(gtk_builder_get_object(builder, "s_progress_buffer"));
+    prev_buffer = GTK_TEXT_BUFFER(gtk_builder_get_object(builder, "prev_buffer"));
+    entry_buffer = GTK_ENTRY_BUFFER(gtk_builder_get_object(builder, "invoice_number_buffer"));
+    carrier_combo = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "carrier_combobox"));
+    latest_progress_listbox = GTK_LIST_BOX(gtk_builder_get_object(builder, "latest_progress_listbox"));
 
     add_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "add_dialog"));
     add_listbox= GTK_LIST_BOX(gtk_builder_get_object(builder, "add_listbox"));
