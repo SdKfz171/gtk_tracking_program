@@ -58,7 +58,7 @@ char * HttpGet(const char * url, char * * response){
     return *response;
 }
 
-#if 0
+#if 1
 #define CARRIER 0
 #define TRACKER 1
 int main(int argc, char * argv[]){

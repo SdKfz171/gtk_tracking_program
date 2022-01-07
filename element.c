@@ -132,9 +132,9 @@ char * GetTrackingOptionJson(TrackingOption * options, int len){
 
 void PrintTrackingData(TrackingData * data){
     printf("%10s─┬─name:%s\n", "From", data->from.name);
-    PRINT_TREE(12, "└─time:%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", data->from.time.tm_year + 1900, data->from.time.tm_mon + 1, data->from.time.tm_mday, data->from.time.tm_hour, data->from.time.tm_min, data->from.time.tm_sec, data->from.time.tm_gmtoff / (60 * 60), data->from.time.tm_gmtoff % (60 * 60));
+    PRINT_TREE(12, "└─time:%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", data->from.time.tm_year + 1900, data->from.time.tm_mon + 1, data->from.time.tm_mday, data->from.time.tm_hour, data->from.time.tm_min, data->from.time.tm_sec, 9, 0);
     printf("%10s─┬─name:%s\n", "To", data->to.name);
-    PRINT_TREE(12, "└─time:%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", data->to.time.tm_year + 1900, data->to.time.tm_mon + 1, data->to.time.tm_mday, data->to.time.tm_hour, data->to.time.tm_min, data->to.time.tm_sec, data->to.time.tm_gmtoff / (60 * 60), data->to.time.tm_gmtoff % (60 * 60));
+    PRINT_TREE(12, "└─time:%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", data->to.time.tm_year + 1900, data->to.time.tm_mon + 1, data->to.time.tm_mday, data->to.time.tm_hour, data->to.time.tm_min, data->to.time.tm_sec, 9, 0);
     printf("%10s─┬─id:%s\n", "State", data->state.id);
     PRINT_TREE(12, "└─text:%s\n", data->state.text);
     
@@ -143,7 +143,7 @@ void PrintTrackingData(TrackingData * data){
         if(i != data->progress_count - 1){
             if(i > 0) PRINT_TREE(12, "├─", NULL);
 
-            PRINT_TREE(13, "─┬─time:%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", data->progresses[i].time.tm_year + 1900, data->progresses[i].time.tm_mon + 1, data->progresses[i].time.tm_mday, data->progresses[i].time.tm_hour, data->progresses[i].time.tm_min, data->progresses[i].time.tm_sec, data->progresses[i].time.tm_gmtoff / (60 * 60), data->progresses[i].time.tm_gmtoff % (60 * 60));    
+            PRINT_TREE(13, "─┬─time:%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", data->progresses[i].time.tm_year + 1900, data->progresses[i].time.tm_mon + 1, data->progresses[i].time.tm_mday, data->progresses[i].time.tm_hour, data->progresses[i].time.tm_min, data->progresses[i].time.tm_sec, 9, 0);    
             PRINT_TREE(12, "│ ├─location─name:%s\n", data->progresses[i].location.name);
             PRINT_TREE(12, "│ ├─status─id:%s\n", data->progresses[i].status.id);
             PRINT_TREE(12, "│ ├─status─text:%s\n", data->progresses[i].status.text);
@@ -151,7 +151,7 @@ void PrintTrackingData(TrackingData * data){
             if(i == data->progress_count - 2) {PRINT_TREE(12, "└", NULL);}
         }
         else{
-            PRINT_TREE(13, "─┬─time:%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", data->progresses[i].time.tm_year + 1900, data->progresses[i].time.tm_mon + 1, data->progresses[i].time.tm_mday, data->progresses[i].time.tm_hour, data->progresses[i].time.tm_min, data->progresses[i].time.tm_sec, data->progresses[i].time.tm_gmtoff / (60 * 60), data->progresses[i].time.tm_gmtoff % (60 * 60));    
+            PRINT_TREE(13, "─┬─time:%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", data->progresses[i].time.tm_year + 1900, data->progresses[i].time.tm_mon + 1, data->progresses[i].time.tm_mday, data->progresses[i].time.tm_hour, data->progresses[i].time.tm_min, data->progresses[i].time.tm_sec, 9, 0);    
             PRINT_TREE(14, "├─location─name:%s\n", data->progresses[i].location.name);
             PRINT_TREE(14, "├─status─id:%s\n", data->progresses[i].status.id);
             PRINT_TREE(14, "├─status─text:%s\n",  data->progresses[i].status.text);
@@ -192,7 +192,7 @@ TrackingData * GetTrackingData_(const char * json){
 #if PUTS
     puts("\nfrom");
     puts(tracking_data->from.name);
-    printf("%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", tracking_data->from.time.tm_year + 1900, tracking_data->from.time.tm_mon + 1, tracking_data->from.time.tm_mday, tracking_data->from.time.tm_hour, tracking_data->from.time.tm_min, tracking_data->from.time.tm_sec, tracking_data->from.time.tm_gmtoff / (60 * 60), tracking_data->from.time.tm_gmtoff % (60 * 60));
+    printf("%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", tracking_data->from.time.tm_year + 1900, tracking_data->from.time.tm_mon + 1, tracking_data->from.time.tm_mday, tracking_data->from.time.tm_hour, tracking_data->from.time.tm_min, tracking_data->from.time.tm_sec, 9, 0);
 #endif
 
     name = json_object_object_get(to_object, "name");
@@ -204,7 +204,7 @@ TrackingData * GetTrackingData_(const char * json){
 #if PUTS
     puts("\nto");
     puts(tracking_data->to.name);
-    printf("%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", tracking_data->to.time.tm_year + 1900, tracking_data->to.time.tm_mon + 1, tracking_data->to.time.tm_mday, tracking_data->to.time.tm_hour, tracking_data->to.time.tm_min, tracking_data->to.time.tm_sec, tracking_data->to.time.tm_gmtoff / (60 * 60), tracking_data->to.time.tm_gmtoff % (60 * 60));
+    printf("%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", tracking_data->to.time.tm_year + 1900, tracking_data->to.time.tm_mon + 1, tracking_data->to.time.tm_mday, tracking_data->to.time.tm_hour, tracking_data->to.time.tm_min, tracking_data->to.time.tm_sec, 9, 0);
 #endif
 
     if(!CHECK_NULL(json_object_get_string(id))) strcpy(tracking_data->state.id, json_object_get_string(id));
@@ -238,7 +238,7 @@ TrackingData * GetTrackingData_(const char * json){
         if(!CHECK_NULL(json_object_get_string(description))) strcpy(tracking_data->progresses[i].description, json_object_get_string(description));
         
 #if PUTS
-        printf("%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", tracking_data->progresses[i].time.tm_year + 1900, tracking_data->progresses[i].time.tm_mon + 1, tracking_data->progresses[i].time.tm_mday, tracking_data->progresses[i].time.tm_hour, tracking_data->progresses[i].time.tm_min, tracking_data->progresses[i].time.tm_sec, tracking_data->progresses[i].time.tm_gmtoff / (60 * 60), tracking_data->progresses[i].time.tm_gmtoff % (60 * 60));
+        printf("%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", tracking_data->progresses[i].time.tm_year + 1900, tracking_data->progresses[i].time.tm_mon + 1, tracking_data->progresses[i].time.tm_mday, tracking_data->progresses[i].time.tm_hour, tracking_data->progresses[i].time.tm_min, tracking_data->progresses[i].time.tm_sec, 9, 0);
         puts(tracking_data->progresses[i].location.name);
         puts(tracking_data->progresses[i].status.id);
         puts(tracking_data->progresses[i].status.text);
@@ -293,7 +293,7 @@ int GetTrackingData(const char * json, TrackingData * tracking_data){
 #if PUTS
     puts("\nfrom");
     puts(tracking_data->from.name);
-    printf("%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", tracking_data->from.time.tm_year + 1900, tracking_data->from.time.tm_mon + 1, tracking_data->from.time.tm_mday, tracking_data->from.time.tm_hour, tracking_data->from.time.tm_min, tracking_data->from.time.tm_sec, tracking_data->from.time.tm_gmtoff / (60 * 60), tracking_data->from.time.tm_gmtoff % (60 * 60));
+    printf("%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", tracking_data->from.time.tm_year + 1900, tracking_data->from.time.tm_mon + 1, tracking_data->from.time.tm_mday, tracking_data->from.time.tm_hour, tracking_data->from.time.tm_min, tracking_data->from.time.tm_sec, 9, 0);
 #endif
 
     name = json_object_object_get(to_object, "name");
@@ -305,7 +305,7 @@ int GetTrackingData(const char * json, TrackingData * tracking_data){
 #if PUTS
     puts("\nto");
     puts(tracking_data->to.name);
-    printf("%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", tracking_data->to.time.tm_year + 1900, tracking_data->to.time.tm_mon + 1, tracking_data->to.time.tm_mday, tracking_data->to.time.tm_hour, tracking_data->to.time.tm_min, tracking_data->to.time.tm_sec, tracking_data->to.time.tm_gmtoff / (60 * 60), tracking_data->to.time.tm_gmtoff % (60 * 60));
+    printf("%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", tracking_data->to.time.tm_year + 1900, tracking_data->to.time.tm_mon + 1, tracking_data->to.time.tm_mday, tracking_data->to.time.tm_hour, tracking_data->to.time.tm_min, tracking_data->to.time.tm_sec, 9, 0);
 #endif
 
     if(!CHECK_NULL(json_object_get_string(id))) strcpy(tracking_data->state.id, json_object_get_string(id));
@@ -339,7 +339,8 @@ int GetTrackingData(const char * json, TrackingData * tracking_data){
         if(!CHECK_NULL(json_object_get_string(description))) strcpy(tracking_data->progresses[i].description, json_object_get_string(description));
         
 #if PUTS
-        printf("%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", tracking_data->progresses[i].time.tm_year + 1900, tracking_data->progresses[i].time.tm_mon + 1, tracking_data->progresses[i].time.tm_mday, tracking_data->progresses[i].time.tm_hour, tracking_data->progresses[i].time.tm_min, tracking_data->progresses[i].time.tm_sec, tracking_data->progresses[i].time.tm_gmtoff / (60 * 60), tracking_data->progresses[i].time.tm_gmtoff % (60 * 60));
+        // printf("%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", tracking_data->progresses[i].time.tm_year + 1900, tracking_data->progresses[i].time.tm_mon + 1, tracking_data->progresses[i].time.tm_mday, tracking_data->progresses[i].time.tm_hour, tracking_data->progresses[i].time.tm_min, tracking_data->progresses[i].time.tm_sec, tracking_data->progresses[i].time.tm_gmtoff / (60 * 60), tracking_data->progresses[i].time.tm_gmtoff % (60 * 60));
+        printf("%4d-%02d-%02dT%02d:%02d:%02d+%02d:%02d\n", tracking_data->progresses[i].time.tm_year + 1900, tracking_data->progresses[i].time.tm_mon + 1, tracking_data->progresses[i].time.tm_mday, tracking_data->progresses[i].time.tm_hour, tracking_data->progresses[i].time.tm_min, tracking_data->progresses[i].time.tm_sec, 9, 0);
         puts(tracking_data->progresses[i].location.name);
         puts(tracking_data->progresses[i].status.id);
         puts(tracking_data->progresses[i].status.text);
