@@ -224,6 +224,9 @@ void add_close_button_clicked(GtkWidget *self)
     puts("add close button");
 }
 
+#if defined(_WIN32) || defined(_WIN64)
+G_MODULE_EXPORT 
+#endif
 void add_prev_track_menu_activate(GtkWidget *self)
 {
     puts("add menu");
