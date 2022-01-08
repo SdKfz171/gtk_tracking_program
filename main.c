@@ -150,7 +150,9 @@ int track_invoice(char *invoice, char *carrier, GtkTextBuffer *out_buffer, int m
 }
 
 /* =============================================== */
-
+#if defined(_WIN32) || defined(_WIN64)
+G_MODULE_EXPORT 
+#endif
 void on_search_button_clicked(GtkButton *self)
 {
     gchar *invoice;
@@ -172,33 +174,51 @@ void on_search_button_clicked(GtkButton *self)
     track_invoice(invoice, carrier, buffer, 0);
 }
 
+#if defined(_WIN32) || defined(_WIN64)
+G_MODULE_EXPORT 
+#endif
 void carrier_combo_changed(GtkComboBoxText *self)
 {
     puts("carrier combobox changed");
 }
 
 // delete dialog
+#if defined(_WIN32) || defined(_WIN64)
+G_MODULE_EXPORT 
+#endif
 void delete_delete_button_clicked(GtkWidget *self)
 {
     puts("delete delete button");
 }
 
+#if defined(_WIN32) || defined(_WIN64)
+G_MODULE_EXPORT 
+#endif
 void delete_close_button_clicked(GtkWidget *self)
 {
     puts("delete close button");
 }
 
+#if defined(_WIN32) || defined(_WIN64)
+G_MODULE_EXPORT 
+#endif 
 void del_prev_track_menu_activate(GtkWidget *self)
 {
     puts("del menu");
 }
 
 // add dialog
+#if defined(_WIN32) || defined(_WIN64)
+G_MODULE_EXPORT 
+#endif
 void add_add_button_clicked(GtkWidget *self)
 {
     puts("add add button");
 }
 
+#if defined(_WIN32) || defined(_WIN64)
+G_MODULE_EXPORT 
+#endif
 void add_close_button_clicked(GtkWidget *self)
 {
     puts("add close button");
@@ -210,16 +230,25 @@ void add_prev_track_menu_activate(GtkWidget *self)
 }
 
 // track dialog
+#if defined(_WIN32) || defined(_WIN64)
+G_MODULE_EXPORT 
+#endif
 void track_track_button_clicked(GtkWidget *self)
 {
     puts("track track button");
 }
 
+#if defined(_WIN32) || defined(_WIN64)
+G_MODULE_EXPORT 
+#endif
 void track_close_button_clicked(GtkWidget *self)
 {
     puts("track close button");
 }
 
+#if defined(_WIN32) || defined(_WIN64)
+G_MODULE_EXPORT 
+#endif
 void track_track_menu_activate(GtkWidget *self)
 {
     puts("track menu");
@@ -309,6 +338,9 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+#if defined(_WIN32) || defined(_WIN64)
+G_MODULE_EXPORT 
+#endif
 void on_destroy(GtkWidget *self)
 {
     gtk_main_quit();
