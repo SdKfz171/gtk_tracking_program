@@ -1,12 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <time.h>
 #include <json.h>
 
 #include "element.h"
 
 #define CHECK_NULL(X) (X == NULL ? 1 : 0)
+
+char *window_dateparsing(const char *buf, struct tm *time)
+{
+    // time format
+    // "time": "2022-01-07T07:45:00+09:00"
+
+    int ret = sscanf(buf, "%d-%d-%dT%d:%d:%d", &(time->tm_yday), &(time->tm_mon), &(time->tm_mday), &(time->tm_hour), &(time->tm_min), &(time->tm_sec));
+    // strftime(json_object_get_string(time), "%Y-%m-%dT%T%z", &(tracking_data->from.time)) == NULL
+
+    if(ret == EOF || ret != 6)
+        return NULL;
+    else
+        return buf;
+}
 
 int GetCarrierCount(const char * json){
     int carrier_count;
@@ -187,7 +201,11 @@ TrackingData * GetTrackingData_(const char * json){
     json_object * carrier_object = json_object_object_get(jobj, "carrier");
 
     if(!CHECK_NULL(json_object_get_string(name))) strcpy(tracking_data->from.name, json_object_get_string(name));
+    #if defined(_WIN32) || defined(_WIN64)
+    if(!CHECK_NULL(json_object_get_string(time))) if(window_dateparsing(json_object_get_string(time), &(tracking_data->from.time)) == NULL) puts("format error");
+    #else
     if(!CHECK_NULL(json_object_get_string(time))) if(strptime(json_object_get_string(time), "%Y-%m-%dT%T%z", &(tracking_data->from.time)) == NULL) puts("format error");
+    #endif
     
 #if PUTS
     puts("\nfrom");
@@ -199,7 +217,11 @@ TrackingData * GetTrackingData_(const char * json){
     time = json_object_object_get(to_object, "time");
 
     if(!CHECK_NULL(json_object_get_string(name))) strcpy(tracking_data->to.name, json_object_get_string(name));
+    #if defined(_WIN32) || defined(_WIN64)
+    if(!CHECK_NULL(json_object_get_string(time))) if(window_dateparsing(json_object_get_string(time), &(tracking_data->to.time)) == NULL) puts("format error");
+    #else
     if(!CHECK_NULL(json_object_get_string(time))) if(strptime(json_object_get_string(time), "%Y-%m-%dT%T%z", &(tracking_data->to.time)) == NULL) puts("format error");
+    #endif
     
 #if PUTS
     puts("\nto");
@@ -231,7 +253,11 @@ TrackingData * GetTrackingData_(const char * json){
         text = json_object_object_get(state_object, "text");
         json_object * description = json_object_object_get(progress_array_object, "description");
 
+        #if defined(_WIN32) || defined(_WIN64)
+        if(!CHECK_NULL(json_object_get_string(time))) if(window_dateparsing(json_object_get_string(time), &(tracking_data->progresses[i].time)) == NULL) puts("format error");
+        #else
         if(!CHECK_NULL(json_object_get_string(time))) if(strptime(json_object_get_string(time), "%Y-%m-%dT%T%z", &(tracking_data->progresses[i].time)) == NULL) puts("format error");
+        #endif
         if(!CHECK_NULL(json_object_get_string(name))) strcpy(tracking_data->progresses[i].location.name, json_object_get_string(name));
         if(!CHECK_NULL(json_object_get_string(id))) strcpy(tracking_data->progresses[i].status.id, json_object_get_string(id));
         if(!CHECK_NULL(json_object_get_string(text))) strcpy(tracking_data->progresses[i].status.text, json_object_get_string(text));
@@ -288,7 +314,11 @@ int GetTrackingData(const char * json, TrackingData * tracking_data){
     json_object * carrier_object = json_object_object_get(jobj, "carrier");
 
     if(!CHECK_NULL(json_object_get_string(name))) strcpy(tracking_data->from.name, json_object_get_string(name));
+    #if defined(_WIN32) || defined(_WIN64)
+    if(!CHECK_NULL(json_object_get_string(time))) if(window_dateparsing(json_object_get_string(time), &(tracking_data->from.time)) == NULL) puts("format error");
+    #else
     if(!CHECK_NULL(json_object_get_string(time))) if(strptime(json_object_get_string(time), "%Y-%m-%dT%T%z", &(tracking_data->from.time)) == NULL) puts("format error");
+    #endif
     
 #if PUTS
     puts("\nfrom");
@@ -300,8 +330,12 @@ int GetTrackingData(const char * json, TrackingData * tracking_data){
     time = json_object_object_get(to_object, "time");
 
     if(!CHECK_NULL(json_object_get_string(name))) strcpy(tracking_data->to.name, json_object_get_string(name));
+    #if defined(_WIN32) || defined(_WIN64)
+    if(!CHECK_NULL(json_object_get_string(time))) if(window_dateparsing(json_object_get_string(time), &(tracking_data->to.time)) == NULL) puts("format error");
+    #else
     if(!CHECK_NULL(json_object_get_string(time))) if(strptime(json_object_get_string(time), "%Y-%m-%dT%T%z", &(tracking_data->to.time)) == NULL) puts("format error");
-    
+    #endif
+
 #if PUTS
     puts("\nto");
     puts(tracking_data->to.name);
@@ -332,7 +366,11 @@ int GetTrackingData(const char * json, TrackingData * tracking_data){
         text = json_object_object_get(state_object, "text");
         json_object * description = json_object_object_get(progress_array_object, "description");
 
+        #if defined(_WIN32) || defined(_WIN64)
+        if(!CHECK_NULL(json_object_get_string(time))) if(window_dateparsing(json_object_get_string(time), &(tracking_data->progresses[i].time)) == NULL) puts("format error");
+        #else
         if(!CHECK_NULL(json_object_get_string(time))) if(strptime(json_object_get_string(time), "%Y-%m-%dT%T%z", &(tracking_data->progresses[i].time)) == NULL) puts("format error");
+        #endif
         if(!CHECK_NULL(json_object_get_string(name))) strcpy(tracking_data->progresses[i].location.name, json_object_get_string(name));
         if(!CHECK_NULL(json_object_get_string(id))) strcpy(tracking_data->progresses[i].status.id, json_object_get_string(id));
         if(!CHECK_NULL(json_object_get_string(text))) strcpy(tracking_data->progresses[i].status.text, json_object_get_string(text));
