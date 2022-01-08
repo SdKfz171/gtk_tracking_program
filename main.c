@@ -108,14 +108,15 @@ int trim(char *str)
     return strlen(str);
 }
 
-void make_progress_form(TrackingData tracking_data, GtkTextBuffer * out_buffer)
+void make_progress_form(TrackingData tracking_data, GtkTextBuffer *out_buffer)
 {
-    for(int i = 0; i < tracking_data.progress_count; i++){
+    for (int i = 0; i < tracking_data.progress_count; i++)
+    {
         char form[BUFSIZ];
         trim(tracking_data.progresses[i].location.name);
-        sprintf(form, "단계\r\t%s\n시간\n\t%d-%02d-%02d %02d:%02d\n현재위치\n\t%s\n처리현황\n\t%s\n\n==============================\n\n", 
-                tracking_data.progresses[i].status.text, tracking_data.progresses[i].time.tm_year+1900, tracking_data.progresses[i].time.tm_mon+1, tracking_data.progresses[i].time.tm_mday, tracking_data.progresses[i].time.tm_hour, tracking_data.progresses[i].time.tm_min, tracking_data.progresses[i].location.name, tracking_data.progresses[i].description);
-        
+        sprintf(form, "단계\r\t%s\n시간\n\t%d-%02d-%02d %02d:%02d\n현재위치\n\t%s\n처리현황\n\t%s\n\n==============================\n\n",
+                tracking_data.progresses[i].status.text, tracking_data.progresses[i].time.tm_year + 1900, tracking_data.progresses[i].time.tm_mon + 1, tracking_data.progresses[i].time.tm_mday, tracking_data.progresses[i].time.tm_hour, tracking_data.progresses[i].time.tm_min, tracking_data.progresses[i].location.name, tracking_data.progresses[i].description);
+
         gtk_text_buffer_insert(out_buffer, &start, form, -1);
         gtk_text_buffer_get_end_iter(out_buffer, &start);
     }
@@ -142,16 +143,16 @@ int track_invoice(char *invoice, char *carrier, GtkTextBuffer *out_buffer, int m
     TrackingData tracking_data;
     GetTrackingData(response, &tracking_data);
 
-    gtk_text_buffer_get_bounds (out_buffer, &start, &end);
+    gtk_text_buffer_get_bounds(out_buffer, &start, &end);
     gtk_text_buffer_delete(out_buffer, &start, &end);
-    
-    gtk_text_buffer_get_bounds (out_buffer, &start, &end);
+
+    gtk_text_buffer_get_bounds(out_buffer, &start, &end);
     make_progress_form(tracking_data, out_buffer);
 }
 
 /* =============================================== */
 #if defined(_WIN32) || defined(_WIN64)
-G_MODULE_EXPORT 
+G_MODULE_EXPORT
 #endif
 void on_search_button_clicked(GtkButton *self)
 {
@@ -175,7 +176,7 @@ void on_search_button_clicked(GtkButton *self)
 }
 
 #if defined(_WIN32) || defined(_WIN64)
-G_MODULE_EXPORT 
+G_MODULE_EXPORT
 #endif
 void carrier_combo_changed(GtkComboBoxText *self)
 {
@@ -184,7 +185,7 @@ void carrier_combo_changed(GtkComboBoxText *self)
 
 // delete dialog
 #if defined(_WIN32) || defined(_WIN64)
-G_MODULE_EXPORT 
+G_MODULE_EXPORT
 #endif
 void delete_delete_button_clicked(GtkWidget *self)
 {
@@ -192,7 +193,7 @@ void delete_delete_button_clicked(GtkWidget *self)
 }
 
 #if defined(_WIN32) || defined(_WIN64)
-G_MODULE_EXPORT 
+G_MODULE_EXPORT
 #endif
 void delete_close_button_clicked(GtkWidget *self)
 {
@@ -200,8 +201,8 @@ void delete_close_button_clicked(GtkWidget *self)
 }
 
 #if defined(_WIN32) || defined(_WIN64)
-G_MODULE_EXPORT 
-#endif 
+G_MODULE_EXPORT
+#endif
 void del_prev_track_menu_activate(GtkWidget *self)
 {
     puts("del menu");
@@ -209,7 +210,7 @@ void del_prev_track_menu_activate(GtkWidget *self)
 
 // add dialog
 #if defined(_WIN32) || defined(_WIN64)
-G_MODULE_EXPORT 
+G_MODULE_EXPORT
 #endif
 void add_add_button_clicked(GtkWidget *self)
 {
@@ -217,7 +218,7 @@ void add_add_button_clicked(GtkWidget *self)
 }
 
 #if defined(_WIN32) || defined(_WIN64)
-G_MODULE_EXPORT 
+G_MODULE_EXPORT
 #endif
 void add_close_button_clicked(GtkWidget *self)
 {
@@ -225,7 +226,7 @@ void add_close_button_clicked(GtkWidget *self)
 }
 
 #if defined(_WIN32) || defined(_WIN64)
-G_MODULE_EXPORT 
+G_MODULE_EXPORT
 #endif
 void add_prev_track_menu_activate(GtkWidget *self)
 {
@@ -234,7 +235,7 @@ void add_prev_track_menu_activate(GtkWidget *self)
 
 // track dialog
 #if defined(_WIN32) || defined(_WIN64)
-G_MODULE_EXPORT 
+G_MODULE_EXPORT
 #endif
 void track_track_button_clicked(GtkWidget *self)
 {
@@ -242,7 +243,7 @@ void track_track_button_clicked(GtkWidget *self)
 }
 
 #if defined(_WIN32) || defined(_WIN64)
-G_MODULE_EXPORT 
+G_MODULE_EXPORT
 #endif
 void track_close_button_clicked(GtkWidget *self)
 {
@@ -250,7 +251,7 @@ void track_close_button_clicked(GtkWidget *self)
 }
 
 #if defined(_WIN32) || defined(_WIN64)
-G_MODULE_EXPORT 
+G_MODULE_EXPORT
 #endif
 void track_track_menu_activate(GtkWidget *self)
 {
@@ -342,7 +343,7 @@ int main(int argc, char *argv[])
 }
 
 #if defined(_WIN32) || defined(_WIN64)
-G_MODULE_EXPORT 
+G_MODULE_EXPORT
 #endif
 void on_destroy(GtkWidget *self)
 {
