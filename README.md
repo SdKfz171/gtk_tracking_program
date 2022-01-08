@@ -9,6 +9,7 @@ __MAC__
     brew install json-c
     brew install gtk+3
     brew install sqlite3
+    brew install glade
     
 __WIN10__
 [MSYS2 Mingw64 기준](https://www.msys2.org)
@@ -17,6 +18,7 @@ __WIN10__
     pacman -S mingw-w64-x86_64-json-c
     pacman -S mingw-w64-x86_64-gtk3
     pacman -S mingw-w64-x86_64-sqlite3
+    pacman -S mingw-w64-x86_64-glade
 
 ## 사용한 배송 조회 API
 
