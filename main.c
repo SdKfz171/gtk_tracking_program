@@ -309,6 +309,26 @@ void delete_delete_button_clicked(GtkWidget *self)
 #if defined(_WIN32) || defined(_WIN64)
 G_MODULE_EXPORT
 #endif
+void delete_listbox_selected_rows_changed (GtkListBox* box)
+{
+    GList * selected_rows = gtk_list_box_get_selected_rows(del_listbox);
+    int del_list_count = g_list_length(selected_rows);
+    printf("%d\r\n", del_list_count);
+    
+    gtk_text_buffer_set_text(del_buffer, "", -1);
+    for(; selected_rows != NULL; selected_rows = selected_rows->next){
+        char temp[BUFSIZ];
+        GtkLabel * label = GTK_LABEL(gtk_bin_get_child(GTK_BIN(selected_rows->data)));
+        // puts(gtk_label_get_text(label));
+        sprintf(temp, "%s\r\n", gtk_label_get_text(label));
+        gtk_text_buffer_insert_at_cursor(del_buffer, temp, -1);
+    }
+    g_list_free(selected_rows);
+}
+
+#if defined(_WIN32) || defined(_WIN64)
+G_MODULE_EXPORT
+#endif
 void delete_close_button_clicked(GtkWidget *self)
 {
     remove_all_del_listbox_rows();

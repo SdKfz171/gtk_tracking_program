@@ -8,7 +8,6 @@
   <object class="GtkDialog" id="add_dialog">
     <property name="can-focus">False</property>
     <property name="type-hint">dialog</property>
-    <signal name="close" handler="add_dialog_close" swapped="no"/>
     <signal name="delete-event" handler="add_dialog_delete_event" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox">
