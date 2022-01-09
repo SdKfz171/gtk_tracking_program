@@ -5,7 +5,7 @@
 
 typedef struct ListElmt_
 {
-	struct Carrier_ *data;
+	void *data;
 	struct ListElmt_ *prev;
 	struct ListElmt_ *next;
 } ListElmt;

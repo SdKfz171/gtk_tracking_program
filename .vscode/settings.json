@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "string.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "functional": "c",
+        "string": "c",
+        "unordered_map": "c",
+        "vector": "c"
     }
 }
