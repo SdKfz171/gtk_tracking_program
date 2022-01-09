@@ -318,7 +318,9 @@ G_MODULE_EXPORT
 #endif
 void add_close_button_clicked(GtkWidget *self)
 {
-    puts("add close button");
+    remove_all_add_listbox_rows();
+    
+    gtk_widget_hide(add_dialog);
 }
 
 #if defined(_WIN32) || defined(_WIN64)
