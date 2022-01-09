@@ -19,6 +19,8 @@ void close_db();
 
 int create_table(char * table_name, int exist_drop, int param_count, ...);
 int insert_values(char * table_name, int param_count, ...);
+int delete_values_by_id(char * table_name, int id);
 int select_table(char * table_name);
+int sql_execute(char * sql);
 int db_available();
 #endif

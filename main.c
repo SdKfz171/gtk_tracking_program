@@ -299,10 +299,20 @@ void delete_delete_button_clicked(GtkWidget *self)
     GList * selected_rows = gtk_list_box_get_selected_rows(del_listbox);
     int del_list_count = g_list_length(selected_rows);
     printf("%d\r\n", del_list_count);
-    
+
+    open_db("prev_track_table.db");   
     for(; selected_rows != NULL; selected_rows = selected_rows->next){
+        int id;
+        char del_invoice[20];
+        char del_carrier[64];
+        GtkLabel * label = GTK_LABEL(gtk_bin_get_child(GTK_BIN(selected_rows->data)));
+        sscanf(gtk_label_get_text(label), "%2d |\t%s\t|\t%s", &id, del_invoice, del_carrier);
+        delete_values_by_id("test_table", id);
+
         gtk_container_remove(del_listbox, GTK_WIDGET(selected_rows->data));
     }
+    close_db();
+
     g_list_free(selected_rows);
 }
 
@@ -319,7 +329,6 @@ void delete_listbox_selected_rows_changed (GtkListBox* box)
     for(; selected_rows != NULL; selected_rows = selected_rows->next){
         char temp[BUFSIZ];
         GtkLabel * label = GTK_LABEL(gtk_bin_get_child(GTK_BIN(selected_rows->data)));
-        // puts(gtk_label_get_text(label));
         sprintf(temp, "%s\r\n", gtk_label_get_text(label));
         gtk_text_buffer_insert_at_cursor(del_buffer, temp, -1);
     }

@@ -195,7 +195,7 @@ int insert_values(char * table_name, int param_count, ...)
     return 1;
 }
 
-int delete_values_by_id(char * table_name, int * id)
+int delete_values_by_id(char * table_name, int id)
 {
     // delete from TrackData where Id=1;
 
@@ -251,6 +251,24 @@ int select_table(char * table_name)
     return 1;
 }
 
+int sql_execute(char * sql)
+{
+    char * err_msg = 0;
+    int rc = sqlite3_exec(prev_track_db, sql, 0, 0, &err_msg);
+
+    if (rc != SQLITE_OK )
+    {
+        fprintf(stderr, "SQL error: %s\n", err_msg);
+        
+        sqlite3_free(err_msg);        
+        sqlite3_close(prev_track_db);
+        
+        return 0;
+    }
+
+    return 1;
+}
+
 int db_available()
 {
     char * err_msg = 0;
@@ -266,7 +284,7 @@ int main(int argc, char *argv[])
     create_table("test_table", 1, 3, "Id integer primary key autoincrement", "Invoice text", "Carrier text");
     insert_values("test_table", 2, "Invoice", "Carrier", "'6078990235408'", "'kr.epost'");
     insert_values("test_table", 2, "Invoice", "Carrier", "'1234567890'", "'kr.lotte'");
-    delete_values_by_id("test_table", 1);
+    // delete_values_by_id("test_table", 1);
     select_table("test_table");
     close_db();
 
