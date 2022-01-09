@@ -253,6 +253,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="selection-mode">multiple</property>
+                        <signal name="selected-rows-changed" handler="delete_listbox_selected_rows_changed" swapped="no"/>
                       </object>
                     </child>
                   </object>
