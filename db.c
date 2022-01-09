@@ -237,7 +237,7 @@ int select_table(char * table_name)
     sprintf(sql, "select * from %s;", table_name);
         
     int rc = sqlite3_exec(prev_track_db, sql, callback, 0, &err_msg);
-    
+     
     if (rc != SQLITE_OK )
     {
         fprintf(stderr, "Failed to select data\n");
@@ -259,7 +259,7 @@ int db_available()
     else return 1;
 }
 
-#if 1
+#if 0
 int main(int argc, char *argv[])
 {
     open_db("table.db");

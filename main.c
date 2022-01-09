@@ -151,6 +151,60 @@ int track_invoice(char *invoice, char *carrier, GtkTextBuffer *out_buffer, int m
     make_progress_form(tracking_data, out_buffer);
 }
 
+void init_add_listbox()
+{
+    open_db("prev_track_table.db");
+    select_table("test_table");
+    close_db();
+
+    ListElmt * element;
+    TrackingOption * option;
+
+    element = list_head(&prev_track_list);
+    for(int i = 0; i < list_size(&prev_track_list); i++)
+    {
+        GtkLabel * temp_label;
+        GtkWidget * separator;
+
+        option = list_data(element);
+
+        char buf[512];
+        sprintf(buf, "%2d |\t%s\t|\t%s", i, option->tracking_number, option->carrier_id);
+        
+        // label create et config
+        temp_label = GTK_LABEL(gtk_label_new(buf));
+        gtk_label_set_selectable(temp_label, TRUE);
+        gtk_label_set_xalign(temp_label, 0);
+        gtk_widget_show(temp_label);
+
+        separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
+        gtk_widget_show(separator);
+
+        gtk_list_box_insert(add_listbox, GTK_WIDGET(temp_label), -1);
+        gtk_list_box_insert(add_listbox, GTK_WIDGET(separator), -1);
+
+        element = list_next(element);
+    }
+}
+
+void remove_all_add_listbox_rows()
+{
+    GList * children = gtk_container_get_children(add_listbox);
+    int add_list_count = g_list_length(children);
+    printf("%d\r\n", add_list_count);
+    
+    for(; add_list_count > 0; add_list_count--){
+        gtk_container_remove(add_listbox, gtk_list_box_get_row_at_index(add_listbox, add_list_count-1));
+    }
+}
+
+void open_add_dialog()
+{
+    init_add_listbox();
+
+    gtk_widget_show(add_dialog);
+}
+
 /* =============================================== */
 #if defined(_WIN32) || defined(_WIN64)
 G_MODULE_EXPORT
@@ -215,7 +269,48 @@ G_MODULE_EXPORT
 #endif
 void add_add_button_clicked(GtkWidget *self)
 {
-    puts("add add button");
+    gchar * invoice;
+    gchar * carrier;
+
+    invoice = gtk_entry_buffer_get_text(add_entry_buffer);
+    carrier = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(add_carrier_combo));
+
+    if(strlen(invoice) == 0 || carrier == NULL){
+        printf("strlen : %d\r\n", strlen(invoice));
+        printf("invoice number or carrier is empty!!\r\n");    
+        return;
+    }
+
+    char invoice_p[32];
+    char carrier_p[32];
+    sprintf(invoice_p, "'%s'", invoice);
+    sprintf(carrier_p, "'%s'", find_carrier_id(carrier));
+
+    open_db("prev_track_table.db");
+    int ret = insert_values("test_table", 2, "Invoice", "Carrier", invoice_p, carrier_p);
+    // select_table("test_table");
+    close_db();
+
+    if(ret)
+    {
+        // hide dialog or select refresh
+        // gtk_widget_hide(add_dialog);
+        remove_all_add_listbox_rows();
+        init_add_listbox();
+    }
+    else {
+        // show error dialog
+        GtkWidget * dialog = gtk_message_dialog_new (NULL, 0,
+                                                    GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
+                                                    "%s", ("SQL Error"));
+        gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
+                                                    ("SQL insert value error.\r\nreturn value: %d"), ret);
+
+        gtk_dialog_run (GTK_DIALOG (dialog));
+
+        gtk_widget_destroy (dialog);
+
+    }
 }
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -231,7 +326,7 @@ G_MODULE_EXPORT
 #endif
 void add_prev_track_menu_activate(GtkWidget *self)
 {
-    puts("add menu");
+    open_add_dialog();
 }
 
 // track dialog
@@ -315,7 +410,7 @@ int db_test_main()
 
 void init()
 {
-    db_test_main();
+    // db_test_main();
 
     // http request carrier list
     char *response;
@@ -363,6 +458,8 @@ int main(int argc, char *argv[])
 
     int combo_size = set_carrier_combobox_elements(carrier_combo);
     printf("combo_size: %d\r\n", combo_size);
+
+    set_carrier_combobox_elements(add_carrier_combo);
 
     gtk_builder_connect_signals(builder, NULL);
     g_object_unref(builder);
