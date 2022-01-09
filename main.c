@@ -559,8 +559,9 @@ int set_carrier_combobox_elements(GtkComboBoxText *combo)
 int db_test_main()
 {
     open_db("prev_track_table.db");
-    create_table("test_table", 1, 3, "Id integer primary key autoincrement", "Invoice text", "Carrier text");
-    insert_values("test_table", 2, "Invoice", "Carrier", "'1234567890'", "'kr.epost'");
+    // create_table("test_table", 1, 3, "Id integer primary key autoincrement", "Invoice text", "Carrier text");
+    // insert_values("test_table", 2, "Invoice", "Carrier", "'1234567890'", "'kr.epost'");
+    insert_values("test_table", 2, "Invoice", "Carrier", "'6078990235408'", "'kr.epost'");
     select_table("test_table");
     close_db();
 
@@ -637,7 +638,7 @@ int main(int argc, char *argv[])
 
     set_carrier_combobox_elements(add_carrier_combo);
 
-    // load_prev_tracking_data();
+    load_prev_tracking_data();
 
     gtk_builder_connect_signals(builder, NULL);
     g_object_unref(builder);
