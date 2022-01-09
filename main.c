@@ -28,7 +28,7 @@ GtkEntryBuffer *entry_buffer;
 GtkComboBoxText *carrier_combo;
 GtkListBox *latest_progress_listbox;
 
-GtkWidget *add_dialog;
+GtkDialog *add_dialog;
 GtkListBox *add_listbox;
 GtkEntryBuffer *add_entry_buffer;
 GtkComboBoxText *add_carrier_combo;
@@ -320,6 +320,13 @@ void add_close_button_clicked(GtkWidget *self)
 {
     remove_all_add_listbox_rows();
     
+    gtk_widget_hide(add_dialog);
+}
+
+gboolean add_dialog_delete_event(GtkWidget* self, GdkEvent* event, gpointer user_data)
+{
+    remove_all_add_listbox_rows();
+
     gtk_widget_hide(add_dialog);
 }
 
