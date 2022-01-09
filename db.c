@@ -201,8 +201,8 @@ int select_table(char * table_name)
     
     // prev_track_list.destroy(NULL);
     // list_destroy(&prev_track_list);
-    // list_init(&prev_track_list, NULL);
-    list_init(&prev_track_list, NULL);
+    // list_init(&prev_track_list);
+    list_init(&prev_track_list);
 
     char sql[64];
     char * err_msg = 0;
@@ -234,5 +234,7 @@ int db_available()
 
 int main(int argc, char *argv[])
 {
+
+
     return 0;
 }
