@@ -151,6 +151,78 @@ int track_invoice(char *invoice, char *carrier, GtkTextBuffer *out_buffer, int m
     make_progress_form(tracking_data, out_buffer);
 }
 
+void prev_track_invoce(char * invoice, char * carrier_id)
+{
+    // char header[BUFSIZ];
+    // sprintf(header, "<big>-----------------------\n<b>운송장 번호: %s</b>\n<b>택배사: %s</b>\n-----------------------</big>\n\n", invoice, find_carrier_name(carrier_id));
+
+    track_invoice(invoice, carrier_id, prev_buffer, 1);
+
+    // gtk_text_buffer_insert_markup(prev_buffer, &start, header, strlen(header));
+}
+
+void load_prev_tracking_data()
+{
+    printf("loading...\r\n");
+
+    open_db("prev_track_table.db");
+    select_table("test_table");
+    close_db();
+
+    ListElmt * element;
+    TrackingOption * option;
+    
+    element = list_head(&prev_track_list);
+
+    int list_box_count = 0;
+    for(int i = 0; i < list_size(&prev_track_list); i++){
+        GtkTextView * temp_textview;
+        GtkWidget * separator;
+
+        option = list_data(element);
+        
+        prev_track_invoce(option->tracking_number, option->carrier_id);
+        
+        char header[BUFSIZ];
+        sprintf(header, "<big>-----------------------\n<b>운송장 번호: %s</b>\n<b>택배사: %s</b>\n-----------------------</big>\n\n", option->tracking_number, find_carrier_name(option->carrier_id));
+
+        gchar * temp_str;
+        GtkTextBuffer * temp_buffer;
+        temp_buffer = gtk_text_buffer_new(NULL);
+
+        gtk_text_buffer_get_bounds(prev_buffer, &start, &end);
+        temp_str = gtk_text_buffer_get_text(prev_buffer, &start, &end, FALSE);
+
+        gtk_text_buffer_set_text(temp_buffer, temp_str, -1);
+        gtk_text_buffer_get_bounds(temp_buffer, &start, &end);
+
+        gtk_text_buffer_insert_markup(temp_buffer, &start, header, strlen(header));
+
+        // text view create et config
+        temp_textview = GTK_TEXT_VIEW(gtk_text_view_new_with_buffer(temp_buffer));
+        gtk_text_view_set_editable(temp_textview, FALSE);
+        gtk_text_view_set_wrap_mode(temp_textview, GTK_WRAP_CHAR);
+        gtk_text_view_set_cursor_visible(temp_textview, FALSE);
+        gtk_text_view_set_left_margin(temp_textview, 2);
+        gtk_text_view_set_right_margin(temp_textview, 2);
+        gtk_text_view_set_top_margin(temp_textview, 5);
+        gtk_text_view_set_bottom_margin(temp_textview, 5);
+        gtk_text_view_set_monospace(temp_textview, TRUE);
+        gtk_widget_show(temp_textview);
+
+        separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
+        gtk_widget_show(separator);
+
+        gtk_list_box_insert(latest_progress_listbox, GTK_WIDGET(temp_textview), -1);
+        gtk_list_box_insert(latest_progress_listbox, GTK_WIDGET(separator), -1);
+        
+        list_box_count++;
+        
+        element = list_next(element);
+    }    
+}
+
+
 void init_add_listbox()
 {
     open_db("prev_track_table.db");
@@ -300,14 +372,19 @@ void delete_delete_button_clicked(GtkWidget *self)
     int del_list_count = g_list_length(selected_rows);
     printf("%d\r\n", del_list_count);
 
-    open_db("prev_track_table.db");   
+    open_db("prev_track_table.db");  
     for(; selected_rows != NULL; selected_rows = selected_rows->next){
         int id;
         char del_invoice[20];
         char del_carrier[64];
+        char sql[BUFSIZ];
+        
         GtkLabel * label = GTK_LABEL(gtk_bin_get_child(GTK_BIN(selected_rows->data)));
         sscanf(gtk_label_get_text(label), "%2d |\t%s\t|\t%s", &id, del_invoice, del_carrier);
-        delete_values_by_id("test_table", id);
+
+        sprintf(sql, "delete from %s where Invoice='%s' and Carrier='%s';", "test_table", del_invoice, del_carrier);
+        puts(sql);
+        sql_execute(sql);
 
         gtk_container_remove(del_listbox, GTK_WIDGET(selected_rows->data));
     }
@@ -559,6 +636,8 @@ int main(int argc, char *argv[])
     printf("combo_size: %d\r\n", combo_size);
 
     set_carrier_combobox_elements(add_carrier_combo);
+
+    // load_prev_tracking_data();
 
     gtk_builder_connect_signals(builder, NULL);
     g_object_unref(builder);
