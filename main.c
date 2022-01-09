@@ -166,7 +166,7 @@ void load_prev_tracking_data()
     printf("loading...\r\n");
 
     open_db("prev_track_table.db");
-    select_table("test_table");
+    select_table("TrackData");
     close_db();
 
     ListElmt * element;
@@ -226,7 +226,7 @@ void load_prev_tracking_data()
 void init_add_listbox()
 {
     open_db("prev_track_table.db");
-    select_table("test_table");
+    select_table("TrackData");
     close_db();
 
     ListElmt * element;
@@ -280,7 +280,7 @@ void open_add_dialog()
 void init_del_listbox()
 {
     open_db("prev_track_table.db");
-    select_table("test_table");
+    select_table("TrackData");
     close_db();
 
     ListElmt * element;
@@ -382,7 +382,7 @@ void delete_delete_button_clicked(GtkWidget *self)
         GtkLabel * label = GTK_LABEL(gtk_bin_get_child(GTK_BIN(selected_rows->data)));
         sscanf(gtk_label_get_text(label), "%2d |\t%s\t|\t%s", &id, del_invoice, del_carrier);
 
-        sprintf(sql, "delete from %s where Invoice='%s' and Carrier='%s';", "test_table", del_invoice, del_carrier);
+        sprintf(sql, "delete from %s where Invoice='%s' and Carrier='%s';", "TrackData", del_invoice, del_carrier);
         puts(sql);
         sql_execute(sql);
 
@@ -454,8 +454,8 @@ void add_add_button_clicked(GtkWidget *self)
     sprintf(carrier_p, "'%s'", find_carrier_id(carrier));
 
     open_db("prev_track_table.db");
-    int ret = insert_values("test_table", 2, "Invoice", "Carrier", invoice_p, carrier_p);
-    // select_table("test_table");
+    int ret = insert_values("TrackData", 2, "Invoice", "Carrier", invoice_p, carrier_p);
+    // select_table("TrackData");
     close_db();
 
     if(ret)
@@ -559,10 +559,11 @@ int set_carrier_combobox_elements(GtkComboBoxText *combo)
 int db_test_main()
 {
     open_db("prev_track_table.db");
-    // create_table("test_table", 1, 3, "Id integer primary key autoincrement", "Invoice text", "Carrier text");
-    // insert_values("test_table", 2, "Invoice", "Carrier", "'1234567890'", "'kr.epost'");
-    insert_values("test_table", 2, "Invoice", "Carrier", "'6078990235408'", "'kr.epost'");
-    select_table("test_table");
+    // create_table("TrackData", 1, 3, "Id integer primary key autoincrement", "Invoice text", "Carrier text");
+    insert_values("TrackData", 2, "Invoice", "Carrier", "'6078990235407'", "'kr.epost'");
+    insert_values("TrackData", 2, "Invoice", "Carrier", "'6078990235408'", "'kr.epost'");
+    insert_values("TrackData", 2, "Invoice", "Carrier", "'6078990235409'", "'kr.epost'");
+    select_table("TrackData");
     close_db();
 
     printf("%d\r\n", db_available());
