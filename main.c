@@ -6,6 +6,7 @@
 #include <sqlite3.h>
 #include <curl/curl.h>
 
+#include "db.h"
 #include "list.h"
 #include "element.h"
 #include "httpget.h"
@@ -284,8 +285,38 @@ int set_carrier_combobox_elements(GtkComboBoxText *combo)
     return carrier_list.size;
 }
 
+int db_test_main()
+{
+    open_db("prev_track_table.db");
+    create_table("test_table", 1, 3, "Id integer primary key autoincrement", "Invoice text", "Carrier text");
+    insert_values("test_table", 2, "Invoice", "Carrier", "'1234567890'", "'kr.epost'");
+    select_table("test_table");
+    close_db();
+
+    printf("%d\r\n", db_available());
+
+    ListElmt * element;
+    TrackingOption * option;
+
+    element = list_head(&prev_track_list);
+    while (1)
+    {
+        option = list_data(element);
+        
+        puts(option->tracking_number);
+        puts(option->carrier_id);
+
+        if(list_is_tail(element))
+            break;
+        else 
+            element = list_next(element);
+    }   
+}
+
 void init()
 {
+    db_test_main();
+
     // http request carrier list
     char *response;
 

@@ -198,10 +198,6 @@ int insert_values(char * table_name, int param_count, ...)
 int select_table(char * table_name)
 {
     // select * from table_name;
-    
-    // prev_track_list.destroy(NULL);
-    // list_destroy(&prev_track_list);
-    // list_init(&prev_track_list);
     list_init(&prev_track_list);
 
     char sql[64];
@@ -232,6 +228,7 @@ int db_available()
     else return 1;
 }
 
+#if 0
 int main(int argc, char *argv[])
 {
     open_db("table.db");
@@ -245,3 +242,4 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+#endif
