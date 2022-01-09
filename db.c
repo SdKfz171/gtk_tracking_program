@@ -234,7 +234,14 @@ int db_available()
 
 int main(int argc, char *argv[])
 {
+    open_db("table.db");
+    create_table("test_table", 1, 3, "Id integer primary key autoincrement", "Invoice text", "Carrier text");
+    insert_values("test_table", 2, "Invoice", "Carrier", "'6078990235408'", "'kr.epost'");
+    insert_values("test_table", 2, "Invoice", "Carrier", "'1234567890'", "'kr.lotte'");
+    select_table("test_table");
+    close_db();
 
+    printf("%d\r\n", db_available());
 
     return 0;
 }
