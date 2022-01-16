@@ -330,7 +330,7 @@ void open_del_dialog()
 }
 
 /* =============================================== */
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
 G_MODULE_EXPORT
 #endif
 void on_search_button_clicked(GtkButton *self)
@@ -354,7 +354,7 @@ void on_search_button_clicked(GtkButton *self)
     track_invoice(invoice, carrier, buffer, 0);
 }
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
 G_MODULE_EXPORT
 #endif
 void carrier_combo_changed(GtkComboBoxText *self)
@@ -363,7 +363,7 @@ void carrier_combo_changed(GtkComboBoxText *self)
 }
 
 // delete dialog
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
 G_MODULE_EXPORT
 #endif
 void delete_delete_button_clicked(GtkWidget *self)
@@ -393,7 +393,7 @@ void delete_delete_button_clicked(GtkWidget *self)
     g_list_free(selected_rows);
 }
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
 G_MODULE_EXPORT
 #endif
 void delete_listbox_selected_rows_changed (GtkListBox* box)
@@ -412,7 +412,7 @@ void delete_listbox_selected_rows_changed (GtkListBox* box)
     g_list_free(selected_rows);
 }
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
 G_MODULE_EXPORT
 #endif
 void delete_close_button_clicked(GtkWidget *self)
@@ -422,7 +422,7 @@ void delete_close_button_clicked(GtkWidget *self)
     gtk_widget_hide(del_dialog);
 }
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
 G_MODULE_EXPORT
 #endif
 void del_prev_track_menu_activate(GtkWidget *self)
@@ -431,7 +431,7 @@ void del_prev_track_menu_activate(GtkWidget *self)
 }
 
 // add dialog
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
 G_MODULE_EXPORT
 #endif
 void add_add_button_clicked(GtkWidget *self)
@@ -480,7 +480,7 @@ void add_add_button_clicked(GtkWidget *self)
     }
 }
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
 G_MODULE_EXPORT
 #endif
 void add_close_button_clicked(GtkWidget *self)
@@ -497,7 +497,7 @@ gboolean add_dialog_delete_event(GtkWidget* self, GdkEvent* event, gpointer user
     gtk_widget_hide(add_dialog);
 }
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
 G_MODULE_EXPORT
 #endif
 void add_prev_track_menu_activate(GtkWidget *self)
@@ -506,7 +506,7 @@ void add_prev_track_menu_activate(GtkWidget *self)
 }
 
 // track dialog
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
 G_MODULE_EXPORT
 #endif
 void track_track_button_clicked(GtkWidget *self)
@@ -514,7 +514,7 @@ void track_track_button_clicked(GtkWidget *self)
     puts("track track button");
 }
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
 G_MODULE_EXPORT
 #endif
 void track_close_button_clicked(GtkWidget *self)
@@ -522,7 +522,7 @@ void track_close_button_clicked(GtkWidget *self)
     puts("track close button");
 }
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
 G_MODULE_EXPORT
 #endif
 void track_track_menu_activate(GtkWidget *self)
@@ -650,7 +650,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
 G_MODULE_EXPORT
 #endif
 void on_destroy(GtkWidget *self)
