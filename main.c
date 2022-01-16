@@ -650,7 +650,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-#if defined(_WIN32) || defined(_WIN64) || defined(__linux__)
+#if defined(_WIN32) || defined(_WIN64)
 G_MODULE_EXPORT
 #endif
 void on_destroy(GtkWidget *self)
