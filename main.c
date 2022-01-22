@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include <json.h>
 #include <gtk/gtk.h>
@@ -27,6 +28,11 @@ GtkEntryBuffer *entry_buffer;
 
 GtkComboBoxText *carrier_combo;
 GtkListBox *latest_progress_listbox;
+
+GtkImage *start_node_image;
+GtkImage *middle_node_image;
+GtkImage *end_node_image;
+GtkImage *delivered_image;
 
 GtkDialog *add_dialog;
 GtkListBox *add_listbox;
@@ -149,6 +155,59 @@ int track_invoice(char *invoice, char *carrier, GtkTextBuffer *out_buffer, int m
 
     gtk_text_buffer_get_bounds(out_buffer, &start, &end);
     make_progress_form(tracking_data, out_buffer);
+
+    if(!mode){
+        typedef union
+        {
+            struct 
+            {
+                bool start_node : 1;
+                bool middle_node : 1;
+                bool end_node : 1;
+                bool delivered : 1;
+            } nodes;
+            int hex;
+        } nodes_t;
+        
+        nodes_t nodes;
+        nodes.hex = 0;
+        
+
+        if(tracking_data.progress_count > 0){
+            if(strcmp(tracking_data.state.id, "in_transit") == 0){
+                nodes.nodes.middle_node = true;
+            }
+            else if(strcmp(tracking_data.state.id, "out_for_delivery") == 0){
+                nodes.nodes.end_node = true;
+            }
+            else if(strcmp(tracking_data.state.id, "delivered") == 0){
+                nodes.nodes.delivered = true;
+            }
+            else{
+                nodes.nodes.start_node = true;
+            }
+        }
+
+        switch (nodes.hex)
+        {
+        case 1:
+            gtk_image_set_from_file(GTK_IMAGE(start_node_image), "./Image/warehouse_red.png");
+            break;
+        
+        case 2:
+            gtk_image_set_from_file(GTK_IMAGE(middle_node_image), "./Image/box_close_red.png");
+            break;
+
+        case 4:
+            gtk_image_set_from_file(GTK_IMAGE(end_node_image), "./Image/truck_red.png");
+            break;
+
+        case 8:
+            gtk_image_set_from_file(GTK_IMAGE(delivered_image), "./Image/box_open_red.png");
+            break;
+        }
+    }
+    
 }
 
 void prev_track_invoce(char * invoice, char * carrier_id)
@@ -624,6 +683,10 @@ int main(int argc, char *argv[])
     entry_buffer = GTK_ENTRY_BUFFER(gtk_builder_get_object(builder, "invoice_number_buffer"));
     carrier_combo = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "carrier_combobox"));
     latest_progress_listbox = GTK_LIST_BOX(gtk_builder_get_object(builder, "latest_progress_listbox"));
+    start_node_image = GTK_IMAGE(gtk_builder_get_object(builder, "start_node_image"));
+    middle_node_image = GTK_IMAGE(gtk_builder_get_object(builder, "middle_node_image"));
+    end_node_image = GTK_IMAGE(gtk_builder_get_object(builder, "end_node_image"));
+    delivered_image = GTK_IMAGE(gtk_builder_get_object(builder, "delivered_image"));
 
     add_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "add_dialog"));
     add_listbox = GTK_LIST_BOX(gtk_builder_get_object(builder, "add_listbox"));
