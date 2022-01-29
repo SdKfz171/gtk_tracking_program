@@ -653,20 +653,22 @@ void init()
 
     // http request carrier list
     char *response;
+    int response_code;
+    response_code = HttpGet("https://apis.tracker.delivery/carriers", &response);
+    if(response_code == 200){
+        puts(response);
 
-    HttpGet("https://apis.tracker.delivery/carriers", &response);
-    puts(response);
+        list_init(&carrier_list);
 
-    list_init(&carrier_list);
-
-    for (int i = 0; i < GetCarrierCount(response); i++)
-    {
-        Carrier *temp = (Carrier *)malloc(sizeof(Carrier));
-        memcpy(temp, &(GetCarriers(response)[i]), sizeof(Carrier));
-        if (!list_size(&carrier_list))
-            list_insert_next(&carrier_list, NULL, temp);
-        else
-            list_insert_next(&carrier_list, list_tail(&carrier_list), temp);
+        for (int i = 0; i < GetCarrierCount(response); i++)
+        {
+            Carrier *temp = (Carrier *)malloc(sizeof(Carrier));
+            memcpy(temp, &(GetCarriers(response)[i]), sizeof(Carrier));
+            if (!list_size(&carrier_list))
+                list_insert_next(&carrier_list, NULL, temp);
+            else
+                list_insert_next(&carrier_list, list_tail(&carrier_list), temp);
+        }
     }
 }
 
