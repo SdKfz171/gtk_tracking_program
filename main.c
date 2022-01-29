@@ -146,7 +146,20 @@ int track_invoice(char *invoice, char *carrier, GtkTextBuffer *out_buffer, int m
         sprintf(url, "https://apis.tracker.delivery/carriers/%s/tracks/%s", carrier, invoice);
     else
         sprintf(url, "https://apis.tracker.delivery/carriers/%s/tracks/%s", find_carrier_id(carrier), invoice);
-    HttpGet(url, &response);
+    int response_code = HttpGet(url, &response);
+    if(response_code == 404){
+        GtkWidget * dialog = gtk_message_dialog_new (NULL, 0,
+                                                    GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
+                                                    "%s", ("Invoice Error"));
+        gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
+                                                    ("Invoice not exist!!\r\n\r\nYour query: [ %s | %s ]"), invoice, carrier);
+
+        gtk_dialog_run (GTK_DIALOG (dialog));
+
+        gtk_widget_destroy (dialog);
+        
+        return -1;
+    }
 
     puts(response);
 

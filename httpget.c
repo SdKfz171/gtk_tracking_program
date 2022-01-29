@@ -31,6 +31,7 @@ size_t write_data(void *ptr, size_t size, size_t nmemb, struct url_data *data) {
     return size * nmemb;
 }
 
+#if 0
 char * HttpGet(const char * url, char * * response){
     puts(url);
     struct url_data data;
@@ -55,7 +56,8 @@ char * HttpGet(const char * url, char * * response){
 
     if(response_code == 404){
         puts("invoice not exist!!");
-        exit(0);
+        // exit(0);
+        return NULL;
     }
     
     curl_easy_cleanup(ctx);
@@ -67,6 +69,43 @@ char * HttpGet(const char * url, char * * response){
 
     return *response;
 }
+#else
+int HttpGet(const char * url, char * * response){
+    puts(url);
+    struct url_data data;
+    data.size = 0;
+    data.data = malloc(INT_MAX);
+
+    CURL * ctx = curl_easy_init();
+    CURLcode res;
+    int response_code = 0;
+    
+    curl_easy_setopt(ctx, CURLOPT_URL, url);
+    curl_easy_setopt(ctx, CURLOPT_WRITEFUNCTION, write_data);
+    curl_easy_setopt(ctx, CURLOPT_WRITEDATA, &data);
+
+    res = curl_easy_perform(ctx);
+    if(res != CURLE_OK){
+        exit(0);
+    }
+
+    curl_easy_getinfo(ctx, CURLINFO_RESPONSE_CODE, &response_code);
+    printf("response_code: %d\r\n", response_code);
+
+    if(response_code == 404){
+        puts("invoice not exist!!");
+    }
+    
+    curl_easy_cleanup(ctx);
+    
+    *response = (char *)malloc(data.size);
+    strcpy(*response, data.data);
+
+    free(data.data);
+
+    return response_code;
+}
+#endif
 
 #if 0
 #define CARRIER 0
