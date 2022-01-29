@@ -55,6 +55,7 @@ char * HttpGet(const char * url, char * * response){
 
     if(response_code == 404){
         puts("invoice not exist!!");
+        exit(0);
     }
     
     curl_easy_cleanup(ctx);
