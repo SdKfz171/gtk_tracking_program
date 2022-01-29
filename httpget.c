@@ -32,12 +32,14 @@ size_t write_data(void *ptr, size_t size, size_t nmemb, struct url_data *data) {
 }
 
 char * HttpGet(const char * url, char * * response){
+    puts(url);
     struct url_data data;
     data.size = 0;
     data.data = malloc(INT_MAX);
 
     CURL * ctx = curl_easy_init();
     CURLcode res;
+    int response_code = 0;
     
     curl_easy_setopt(ctx, CURLOPT_URL, url);
     curl_easy_setopt(ctx, CURLOPT_WRITEFUNCTION, write_data);
@@ -46,6 +48,13 @@ char * HttpGet(const char * url, char * * response){
     res = curl_easy_perform(ctx);
     if(res != CURLE_OK){
         exit(0);
+    }
+
+    curl_easy_getinfo(ctx, CURLINFO_RESPONSE_CODE, &response_code);
+    printf("response_code: %d\r\n", response_code);
+
+    if(response_code == 404){
+        puts("invoice not exist!!");
     }
     
     curl_easy_cleanup(ctx);
