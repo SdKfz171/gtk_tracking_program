@@ -452,6 +452,8 @@ void delete_delete_button_clicked(GtkWidget *self)
     close_db();
 
     g_list_free(selected_rows);
+
+    load_prev_tracking_data();
 }
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -525,6 +527,7 @@ void add_add_button_clicked(GtkWidget *self)
         // gtk_widget_hide(add_dialog);
         remove_all_add_listbox_rows();
         init_add_listbox();
+        load_prev_tracking_data();
     }
     else {
         // show error dialog
