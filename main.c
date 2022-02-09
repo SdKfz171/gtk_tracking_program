@@ -283,6 +283,16 @@ void load_prev_tracking_data()
     }    
 }
 
+void remove_all_latest_listbox_rows()
+{
+    GList * children = gtk_container_get_children(latest_progress_listbox);
+    int latest_list_count = g_list_length(children);
+    printf("%d\r\n", latest_list_count);
+    
+    for(; latest_list_count > 0; latest_list_count--){
+        gtk_container_remove(latest_progress_listbox, gtk_list_box_get_row_at_index(latest_progress_listbox, latest_list_count-1));
+    }
+}
 
 void init_add_listbox()
 {
@@ -527,6 +537,8 @@ void add_add_button_clicked(GtkWidget *self)
         // gtk_widget_hide(add_dialog);
         remove_all_add_listbox_rows();
         init_add_listbox();
+
+        remove_all_latest_listbox_rows();
         load_prev_tracking_data();
     }
     else {
