@@ -177,7 +177,7 @@ void PrintTrackingData(TrackingData * data){
     PRINT_TREE(12, "└─tel:%s\n", data->carrier.tel);
 }
 
-#define PUTS 1
+#define PUTS 0
 TrackingData * GetTrackingData_(const char * json){
     int progress_count = 0;
 
