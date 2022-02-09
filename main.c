@@ -463,7 +463,8 @@ void delete_delete_button_clicked(GtkWidget *self)
 
     g_list_free(selected_rows);
 
-    load_prev_tracking_data();
+    // load_prev_tracking_data();
+    remove_all_latest_listbox_rows();
 }
 
 #if defined(_WIN32) || defined(_WIN64)
