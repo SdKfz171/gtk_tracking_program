@@ -162,9 +162,10 @@ int track_invoice(char *invoice, char *carrier, GtkTextBuffer *out_buffer, int m
     }
 
     puts(response);
-
+    puts("testestestsssss");
     TrackingData tracking_data;
     GetTrackingData(response, &tracking_data);
+    puts("get tracking check");
 
     gtk_text_buffer_get_bounds(out_buffer, &start, &end);
     gtk_text_buffer_delete(out_buffer, &start, &end);
@@ -172,6 +173,7 @@ int track_invoice(char *invoice, char *carrier, GtkTextBuffer *out_buffer, int m
     gtk_text_buffer_get_bounds(out_buffer, &start, &end);
     make_progress_form(tracking_data, out_buffer);
 
+    
     if(!mode){
         typedef union
         {
@@ -243,7 +245,7 @@ void load_prev_tracking_data()
         option = list_data(element);
         
         prev_track_invoce(option->tracking_number, option->carrier_id);
-        
+        puts("debug test1");
         char header[BUFSIZ];
         sprintf(header, "<big>-----------------------\n<b>운송장 번호: %s</b>\n<b>택배사: %s</b>\n-----------------------</big>\n\n", option->tracking_number, find_carrier_name(option->carrier_id));
 
@@ -253,7 +255,7 @@ void load_prev_tracking_data()
 
         gtk_text_buffer_get_bounds(prev_buffer, &start, &end);
         temp_str = gtk_text_buffer_get_text(prev_buffer, &start, &end, FALSE);
-
+        puts("debug test3");
         gtk_text_buffer_set_text(temp_buffer, temp_str, -1);
         gtk_text_buffer_get_bounds(temp_buffer, &start, &end);
 
@@ -281,8 +283,19 @@ void load_prev_tracking_data()
         
         element = list_next(element);
     }    
+    puts("debug test2");
 }
 
+void remove_all_latest_listbox_rows()
+{
+    GList * children = gtk_container_get_children(latest_progress_listbox);
+    int latest_list_count = g_list_length(children);
+    printf("%d\r\n", latest_list_count);
+    
+    for(; latest_list_count > 0; latest_list_count--){
+        gtk_container_remove(latest_progress_listbox, gtk_list_box_get_row_at_index(latest_progress_listbox, latest_list_count-1));
+    }
+}
 
 void init_add_listbox()
 {
@@ -452,6 +465,10 @@ void delete_delete_button_clicked(GtkWidget *self)
     close_db();
 
     g_list_free(selected_rows);
+
+    // load_prev_tracking_data();
+    remove_all_latest_listbox_rows();
+    load_prev_tracking_data();
 }
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -525,6 +542,9 @@ void add_add_button_clicked(GtkWidget *self)
         // gtk_widget_hide(add_dialog);
         remove_all_add_listbox_rows();
         init_add_listbox();
+
+        // remove_all_latest_listbox_rows();
+        // load_prev_tracking_data();
     }
     else {
         // show error dialog
